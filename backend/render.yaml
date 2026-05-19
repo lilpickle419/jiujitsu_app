@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: jitsu-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: FRONTEND_URL
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+
+databases:
+  - name: jitsu-db
+    databaseName: jitsu_db
+    user: jitsu_user
