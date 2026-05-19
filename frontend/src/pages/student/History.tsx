@@ -4,6 +4,7 @@ import StarRating from '../../components/StarRating'
 import { listWeeks, getCurrentWeek } from '../../api/weeks'
 import { getMyWeekAssignments } from '../../api/assignments'
 import { getMyWeekSubmissions, getVideoUrl } from '../../api/submissions'
+import { getFeedbackVideoUrl } from '../../api/reviews'
 import type { Week, Assignment, Submission } from '../../api/types'
 
 interface WeekData {
@@ -101,6 +102,19 @@ export default function StudentHistory() {
                             {assignment.technique.category.name}
                           </span>
                         </div>
+                        {assignment.technique.description && (
+                          <p className="text-gray-500 text-sm mb-2">{assignment.technique.description}</p>
+                        )}
+                        {assignment.technique.reference_url && (
+                          <a
+                            href={assignment.technique.reference_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:underline text-xs mb-2 block"
+                          >
+                            Reference video ↗
+                          </a>
+                        )}
                         {sub ? (
                           <>
                             <video
@@ -113,6 +127,16 @@ export default function StudentHistory() {
                                 <StarRating value={sub.review.rating} readonly />
                                 {sub.review.notes && (
                                   <p className="text-gray-600 text-sm mt-1">{sub.review.notes}</p>
+                                )}
+                                {sub.review.feedback_video_path && (
+                                  <div className="mt-2">
+                                    <p className="text-xs text-gray-500 font-medium uppercase tracking-wide mb-1">Feedback video</p>
+                                    <video
+                                      src={getFeedbackVideoUrl(sub.review.id)}
+                                      controls
+                                      className="w-full max-h-48 rounded bg-black"
+                                    />
+                                  </div>
                                 )}
                               </div>
                             ) : (

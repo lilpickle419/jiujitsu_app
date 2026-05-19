@@ -40,6 +40,17 @@ export interface Review {
   rating: number
   notes: string | null
   requires_resubmission: boolean
+  feedback_video_path: string | null
+  created_at: string
+  updated_at: string | null
+}
+
+export interface JournalEntry {
+  id: string
+  name: string
+  description: string | null
+  notes: string | null
+  reference_url: string | null
   created_at: string
   updated_at: string | null
 }

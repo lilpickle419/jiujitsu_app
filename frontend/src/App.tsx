@@ -5,6 +5,7 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import StudentDashboard from './pages/student/Dashboard'
 import StudentHistory from './pages/student/History'
+import StudentJournal from './pages/student/Journal'
 import TutorDashboard from './pages/tutor/Dashboard'
 import StudentDetail from './pages/tutor/StudentDetail'
 import TechniqueLibrary from './pages/tutor/TechniqueLibrary'
@@ -32,6 +33,10 @@ export default function App() {
           <Route
             path="/student/history"
             element={<ProtectedRoute role="student"><StudentHistory /></ProtectedRoute>}
+          />
+          <Route
+            path="/student/journal"
+            element={<ProtectedRoute role="student"><StudentJournal /></ProtectedRoute>}
           />
 
           <Route

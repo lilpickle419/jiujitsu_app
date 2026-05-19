@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import Layout from '../../components/Layout'
 import StarRating from '../../components/StarRating'
 import { listWeeks, getCurrentWeek, getNextWeek } from '../../api/weeks'
 import { getStudentWeekAssignments, removeAssignment, assignTechniques } from '../../api/assignments'
 import { getStudentWeekSubmissions, getVideoUrl } from '../../api/submissions'
-import { createReview, updateReview } from '../../api/reviews'
+import { createReview, updateReview, uploadFeedbackVideo, getFeedbackVideoUrl } from '../../api/reviews'
 import { listTechniques } from '../../api/techniques'
 import { listStudents } from '../../api/users'
 import type { Week, Assignment, Submission, Technique, User } from '../../api/types'
@@ -21,6 +21,8 @@ export default function StudentDetail() {
   const [showAssign, setShowAssign] = useState(false)
   const [selectedTechIds, setSelectedTechIds] = useState<string[]>([])
   const [reviewState, setReviewState] = useState<Record<string, { rating: number; notes: string; requires_resubmission: boolean }>>({})
+  const [uploadingFeedback, setUploadingFeedback] = useState<string | null>(null)
+  const feedbackInputRefs = useRef<Record<string, HTMLInputElement | null>>({})
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -87,6 +89,18 @@ export default function StudentDetail() {
     }
     const sRes = await getStudentWeekSubmissions(studentId!, selectedWeek!.id)
     setSubmissions(sRes.data)
+  }
+
+  const handleFeedbackVideoUpload = async (sub: Submission, file: File) => {
+    if (!sub.review) return
+    setUploadingFeedback(sub.id)
+    try {
+      await uploadFeedbackVideo(sub.review.id, file)
+      const sRes = await getStudentWeekSubmissions(studentId!, selectedWeek!.id)
+      setSubmissions(sRes.data)
+    } finally {
+      setUploadingFeedback(null)
+    }
   }
 
   const initReviewState = (sub: Submission) => {
@@ -278,6 +292,41 @@ export default function StudentDetail() {
                       {sub.review ? 'Update review' : 'Submit review'}
                     </button>
                   </div>
+
+                  {sub.review && (
+                    <div className="border border-gray-200 rounded-lg p-4 mt-3">
+                      <p className="text-sm font-medium text-gray-700 mb-2">Feedback video</p>
+                      {sub.review.feedback_video_path && (
+                        <video
+                          src={getFeedbackVideoUrl(sub.review.id)}
+                          controls
+                          className="w-full max-h-48 rounded-lg bg-black mb-3"
+                        />
+                      )}
+                      <input
+                        ref={(el) => { feedbackInputRefs.current[sub.id] = el }}
+                        type="file"
+                        accept="video/*"
+                        className="hidden"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0]
+                          if (file) handleFeedbackVideoUpload(sub, file)
+                          e.target.value = ''
+                        }}
+                      />
+                      <button
+                        onClick={() => feedbackInputRefs.current[sub.id]?.click()}
+                        disabled={uploadingFeedback === sub.id}
+                        className="bg-purple-600 hover:bg-purple-700 text-white text-sm px-4 py-2 rounded-lg disabled:opacity-50"
+                      >
+                        {uploadingFeedback === sub.id
+                          ? 'Uploading…'
+                          : sub.review.feedback_video_path
+                          ? 'Replace feedback video'
+                          : 'Upload feedback video'}
+                      </button>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

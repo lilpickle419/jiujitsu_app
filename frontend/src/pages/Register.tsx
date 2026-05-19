@@ -26,56 +26,86 @@ export default function Register() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-      <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-md">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">Create Student Account</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+    <div className="min-h-screen flex">
+      <div className="hidden lg:flex lg:w-5/12 bg-slate-900 flex-col justify-between p-10">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center text-white font-bold text-xs">
+            BJJ
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              minLength={6}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          {error && <p className="text-red-500 text-sm">{error}</p>}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg disabled:opacity-50"
-          >
-            {loading ? 'Creating account…' : 'Register'}
-          </button>
-        </form>
-        <p className="text-sm text-gray-500 mt-4 text-center">
-          Already have an account?{' '}
-          <Link to="/login" className="text-blue-600 hover:underline">
-            Login
-          </Link>
-        </p>
+          <span className="text-white font-semibold text-sm">Jiu-Jitsu Dojo</span>
+        </div>
+        <div>
+          <p className="text-5xl font-bold text-white leading-tight">
+            Start your journey today.
+          </p>
+          <p className="text-slate-400 mt-5 text-base leading-relaxed">
+            Join and get personalized weekly technique assignments with feedback from your tutor.
+          </p>
+        </div>
+        <p className="text-slate-600 text-xs">© 2025 Jiu-Jitsu Dojo</p>
+      </div>
+
+      <div className="flex-1 flex items-center justify-center p-8 bg-white">
+        <div className="w-full max-w-sm">
+          <h2 className="text-2xl font-bold text-slate-900 mb-1">Create your account</h2>
+          <p className="text-slate-500 text-sm mb-8">Sign up as a student to get started.</p>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">Full name</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                placeholder="John Smith"
+                className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                placeholder="you@example.com"
+                className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                minLength={6}
+                placeholder="Min. 6 characters"
+                className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+              />
+            </div>
+            {error && (
+              <div className="bg-red-50 border border-red-100 text-red-600 text-sm px-4 py-3 rounded-xl">
+                {error}
+              </div>
+            )}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-xl text-sm transition disabled:opacity-50 mt-2"
+            >
+              {loading ? 'Creating account…' : 'Create account'}
+            </button>
+          </form>
+
+          <p className="text-sm text-slate-500 mt-6 text-center">
+            Already have an account?{' '}
+            <Link to="/login" className="text-indigo-600 hover:text-indigo-700 font-medium">
+              Sign in
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   )

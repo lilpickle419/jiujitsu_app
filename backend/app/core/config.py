@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     TUTOR_EMAIL: str = "tutor@jitsu.com"
     TUTOR_PASSWORD: str = "tutor123"
     TUTOR_NAME: str = "Head Tutor"
+    FRONTEND_URL: str = "http://localhost:5173"
 
     class Config:
         env_file = ".env"

@@ -111,6 +111,21 @@ class Submission(Base):
     review = relationship("Review", back_populates="submission", uselist=False, cascade="all, delete-orphan")
 
 
+class JournalEntry(Base):
+    __tablename__ = "journal_entries"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    student_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    name = Column(String, nullable=False)
+    description = Column(Text)
+    notes = Column(Text)
+    reference_url = Column(String)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+    student = relationship("User", foreign_keys=[student_id])
+
+
 class Review(Base):
     __tablename__ = "reviews"
 
@@ -120,6 +135,7 @@ class Review(Base):
     rating = Column(Integer, nullable=False)
     notes = Column(Text)
     requires_resubmission = Column(Boolean, default=False, nullable=False)
+    feedback_video_path = Column(String, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 

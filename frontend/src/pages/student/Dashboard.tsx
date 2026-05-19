@@ -4,6 +4,7 @@ import StarRating from '../../components/StarRating'
 import { getCurrentWeek } from '../../api/weeks'
 import { getMyWeekAssignments } from '../../api/assignments'
 import { getMyWeekSubmissions, uploadSubmission, getVideoUrl } from '../../api/submissions'
+import { getFeedbackVideoUrl } from '../../api/reviews'
 import type { Week, Assignment, Submission } from '../../api/types'
 
 export default function StudentDashboard() {
@@ -126,6 +127,16 @@ export default function StudentDashboard() {
                       <p className="text-xs text-gray-500 font-medium uppercase tracking-wide mb-1">Tutor feedback</p>
                       <StarRating value={sub.review.rating} readonly />
                       {sub.review.notes && <p className="text-gray-700 text-sm mt-2">{sub.review.notes}</p>}
+                      {sub.review.feedback_video_path && (
+                        <div className="mt-3">
+                          <p className="text-xs text-gray-500 font-medium uppercase tracking-wide mb-1">Feedback video</p>
+                          <video
+                            src={getFeedbackVideoUrl(sub.review.id)}
+                            controls
+                            className="w-full max-h-48 rounded-lg bg-black"
+                          />
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>

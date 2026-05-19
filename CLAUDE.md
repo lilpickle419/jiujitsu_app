@@ -10,6 +10,25 @@ Jiu-Jitsu training dashboard with two roles:
 
 Stack: FastAPI + PostgreSQL backend, React + Vite + Tailwind CSS frontend.
 
+## Commands
+
+### Backend
+```bash
+cd backend
+uvicorn app.main:app --reload          # dev server (port 8000)
+python seed.py                         # idempotent: creates tutor + default categories
+```
+
+### Frontend
+```bash
+cd frontend
+npm run dev                            # dev server (port 5173)
+npm run build                          # production build
+npx tsc --noEmit                       # type-check without emitting
+```
+
+There are no automated tests in this project.
+
 ## Running locally
 
 **Prerequisites:** Docker, Python 3.11+, Node 18+
@@ -25,11 +44,11 @@ cd backend
 python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env          # edit if needed
-python seed.py                # creates tutor account + default categories
+python seed.py
 uvicorn app.main:app --reload
 ```
 
-API runs at `http://localhost:8000`. Docs at `http://localhost:8000/docs`.
+API at `http://localhost:8000`. Docs at `http://localhost:8000/docs`.
 
 ### 3. Frontend
 ```bash
@@ -38,7 +57,7 @@ npm install
 npm run dev
 ```
 
-App runs at `http://localhost:5173`.
+App at `http://localhost:5173`.
 
 ### Default credentials
 - Tutor: `tutor@jitsu.com` / `tutor123`
@@ -50,7 +69,7 @@ App runs at `http://localhost:5173`.
 
 | File | Purpose |
 |------|---------|
-| `main.py` | FastAPI app, CORS, router registration, `create_all` on startup |
+| `main.py` | FastAPI app, CORS (allows `http://localhost:5173` only), router registration, `create_all` on startup |
 | `models.py` | All SQLAlchemy ORM models |
 | `schemas.py` | All Pydantic request/response schemas |
 | `dependencies.py` | `get_current_user`, `get_current_tutor`, `get_current_student` FastAPI deps |
@@ -67,7 +86,7 @@ Routers in `routers/`: `auth`, `users`, `techniques`, `weeks`, `assignments`, `s
 users ──< student_week_techniques >── weeks
                    │
               techniques
-                   
+
 users (student) ──< submissions >── weeks + techniques
 submissions ──── reviews (1:1)
 ```
@@ -95,6 +114,10 @@ Served via `GET /submissions/{id}/video?token={jwt}` (token passed as query para
 | `pages/tutor/StudentDetail.tsx` | Per-student week view: assign techniques, watch videos, submit reviews |
 | `pages/tutor/TechniqueLibrary.tsx` | Browse/create techniques and categories |
 
+#### Vite dev proxy
+
+`vite.config.ts` proxies `/api/*` → `http://localhost:8000/*` (strips the `/api` prefix). All `client.ts` requests use `/api/...` paths — no hardcoded backend URL is needed in development.
+
 ### Auth flow
 
 1. Login → `POST /auth/login` returns JWT + role
@@ -112,3 +135,4 @@ Weeks follow ISO 8601 (Monday–Sunday). `get_or_create_week` lazily creates wee
 - A submission is unique per `(student, week, technique)`.
 - Only the tutor can assign/remove techniques and create/update reviews.
 - `seed.py` is idempotent — safe to run multiple times.
+- TypeScript is configured with `strict: true`, `noUnusedLocals`, and `noUnusedParameters`.

@@ -53,6 +53,13 @@ class TechniqueCreate(BaseModel):
     reference_url: Optional[str] = None
 
 
+class TechniqueUpdate(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+    category_id: Optional[UUID] = None
+    reference_url: Optional[str] = None
+
+
 class TechniqueOut(BaseModel):
     id: UUID
     name: str
@@ -89,6 +96,25 @@ class AssignmentOut(BaseModel):
     model_config = {"from_attributes": True}
 
 
+class JournalEntryCreate(BaseModel):
+    name: str
+    description: Optional[str] = None
+    notes: Optional[str] = None
+    reference_url: Optional[str] = None
+
+
+class JournalEntryOut(BaseModel):
+    id: UUID
+    name: str
+    description: Optional[str]
+    notes: Optional[str]
+    reference_url: Optional[str]
+    created_at: datetime
+    updated_at: Optional[datetime]
+
+    model_config = {"from_attributes": True}
+
+
 class ReviewCreate(BaseModel):
     rating: int
     notes: Optional[str] = None
@@ -107,6 +133,7 @@ class ReviewOut(BaseModel):
     rating: int
     notes: Optional[str]
     requires_resubmission: bool
+    feedback_video_path: Optional[str] = None
     created_at: datetime
     updated_at: Optional[datetime]
 

@@ -32,45 +32,74 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-      <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-md">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">Jiu-Jitsu Dashboard</h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+    <div className="min-h-screen flex">
+      <div className="hidden lg:flex lg:w-5/12 bg-slate-900 flex-col justify-between p-10">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center text-white font-bold text-xs">
+            BJJ
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          {error && <p className="text-red-500 text-sm">{error}</p>}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg disabled:opacity-50"
-          >
-            {loading ? 'Logging in…' : 'Login'}
-          </button>
-        </form>
-        <p className="text-sm text-gray-500 mt-4 text-center">
-          New student?{' '}
-          <Link to="/register" className="text-blue-600 hover:underline">
-            Register here
-          </Link>
-        </p>
+          <span className="text-white font-semibold text-sm">Jiu-Jitsu Dojo</span>
+        </div>
+        <div>
+          <p className="text-5xl font-bold text-white leading-tight">
+            Train smarter.<br />Progress faster.
+          </p>
+          <p className="text-slate-400 mt-5 text-base leading-relaxed">
+            Track your techniques, submit practice videos, and get expert feedback — week by week.
+          </p>
+        </div>
+        <p className="text-slate-600 text-xs">© 2025 Jiu-Jitsu Dojo</p>
+      </div>
+
+      <div className="flex-1 flex items-center justify-center p-8 bg-white">
+        <div className="w-full max-w-sm">
+          <h2 className="text-2xl font-bold text-slate-900 mb-1">Welcome back</h2>
+          <p className="text-slate-500 text-sm mb-8">Sign in to continue to your dashboard.</p>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                placeholder="you@example.com"
+                className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                placeholder="••••••••"
+                className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+              />
+            </div>
+            {error && (
+              <div className="bg-red-50 border border-red-100 text-red-600 text-sm px-4 py-3 rounded-xl">
+                {error}
+              </div>
+            )}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-xl text-sm transition disabled:opacity-50 mt-2"
+            >
+              {loading ? 'Signing in…' : 'Sign in'}
+            </button>
+          </form>
+
+          <p className="text-sm text-slate-500 mt-6 text-center">
+            New student?{' '}
+            <Link to="/register" className="text-indigo-600 hover:text-indigo-700 font-medium">
+              Create an account
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   )
